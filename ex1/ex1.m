@@ -28,6 +28,7 @@ clear ; close all; clc
 
 %% ==================== Part 1: Basic Function ====================
 % Complete warmUpExercise.m
+% ここでさっきの課題が回されるわけですね。
 fprintf('Running warmUpExercise ... \n');
 fprintf('5x5 Identity Matrix: \n');
 warmUpExercise()
@@ -38,6 +39,7 @@ pause;
 
 %% ======================= Part 2: Plotting =======================
 fprintf('Plotting Data ...\n')
+%ここでデータセットを読み込む
 data = load('ex1data1.txt');
 X = data(:, 1); y = data(:, 2);
 m = length(y); % number of training examples
@@ -46,15 +48,18 @@ m = length(y); % number of training examples
 % Note: You have to complete the code in plotData.m
 plotData(X, y);
 
+%Pauseとか全然使ったことなかったな
 fprintf('Program paused. Press enter to continue.\n');
 pause;
 
 %% =================== Part 3: Cost and Gradient descent ===================
 
+%課題２で読み込んだデータセットに次元を一つ加える。
 X = [ones(m, 1), data(:,1)]; % Add a column of ones to x
 theta = zeros(2, 1); % initialize fitting parameters
 
 % Some gradient descent settings
+%反復回数と、学習率の定義という感じ
 iterations = 1500;
 alpha = 0.01;
 
@@ -63,6 +68,7 @@ fprintf('\nTesting the cost function ...\n')
 J = computeCost(X, y, theta);
 fprintf('With theta = [0 ; 0]\nCost computed = %f\n', J);
 fprintf('Expected cost value (approx) 32.07\n');
+pause;
 
 % further testing of the cost function
 J = computeCost(X, y, [-1 ; 2]);
