@@ -25,6 +25,22 @@ sigma = zeros(1, size(X, 2));
 %
 % Hint: You might find the 'mean' and 'std' functions useful.
 %       
+%ここでフィーチャースケーリングを行うということですね。
+
+%各々の要素の平均を取る
+%列ごとに値を返してくるので、
+mu = mean(X);
+
+%今回は最大最小で割るのではなく、標準偏差で割るということ
+sigma = std(X);
+
+%スケーリングを行う
+for ii = 1:size(X,2)
+    X_norm(:,ii) = (X_norm(:,ii)-mu(1,ii))./sigma(1,ii);
+end
+
+
+
 
 
 

@@ -13,9 +13,11 @@ J = 0;
 % Instructions: Compute the cost of a particular choice of theta
 %               You should set J to the cost.
 
+%仮設関数の計算
+hx = X*theta;
 
-
-
+%評価関数の計算
+J = 1/(2*m)*sum((hx-y).^2);
 
 % =========================================================================
 

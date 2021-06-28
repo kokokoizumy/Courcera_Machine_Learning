@@ -81,6 +81,9 @@ X = [ones(m, 1) X];
 
 fprintf('Running gradient descent ...\n');
 
+%J = computeCostMulti(X,y,theta);
+
+
 % Choose some alpha value
 alpha = 0.01;
 num_iters = 400;
