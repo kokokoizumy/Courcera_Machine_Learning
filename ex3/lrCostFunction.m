@@ -36,14 +36,18 @@ grad = zeros(size(theta));
 %           grad = grad + YOUR_CODE_HERE (using the temp variable)
 %
 
+%仮設関数の定義
+hx = sigmoid(X*theta);
 
+%正則化用に、thetaの第一項をゼロに
+theta_reg = theta;
+theta_reg(1,1) =  0;
 
+%評価関数の定義、第２項に正則化を追加
+J = (1/m)*sum(-y.*log(hx)-(1-y).*log(1-hx)) + lambda/(2*m)*sum(theta_reg.*theta_reg);
 
-
-
-
-
-
+%偏微分の定義、j=0とそれ以降で式が異なるようにする
+grad = (1/m)*(sum((hx - y).*X))' +lambda/m*theta_reg;
 
 % =============================================================
 

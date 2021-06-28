@@ -21,10 +21,19 @@ p = zeros(size(X, 1), 1);
 %       can use max(A, [], 2) to obtain the max for each row.
 %
 
+%一層目
+X = [ones(m,1) X];
+temp = X*Theta1';
+temp = sigmoid(temp);
+
+%二層目：出力層
+temp = [ones(m,1) temp]
+p =  temp*Theta2';
+p = sigmoid(p);
 
 
-
-
+%各ラベルである確率が列に格納されているので、その中から最大のものをmax関数で求める
+[val,p] = max(p,[],2);
 
 
 
