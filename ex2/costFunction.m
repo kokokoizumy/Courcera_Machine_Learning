@@ -20,6 +20,19 @@ grad = zeros(size(theta));
 % Note: grad should have the same dimensions as theta
 %
 
+%仮設関数の計算
+hx = X*theta;
+
+%ロジスティック回帰用にsigmoid関数をかます
+hx =sigmoid(hx)
+
+%評価関数の計算を行う
+J = (1/m)*sum(-y.*log(hx)-(1-y).*log(1-hx));
+
+%評価関数の偏微分の計算
+grad = (1/m)*(sum((hx - y).*X))'
+
+
 
 
 
