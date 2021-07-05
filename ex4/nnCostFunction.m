@@ -62,23 +62,41 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+%一層目
+X = [ones(m,1) X];
+temp = X*Theta1';
+temp = sigmoid(temp);
+
+%二層目：出力層（＝仮設関数の結果になる）
+temp = [ones(m,1) temp];
+hx =  temp*Theta2';
+hx = sigmoid(hx);
+
+%正則化用に、Theta1,Theta2の先頭をゼロにする
+%バイアス項を変更するように、
+Theta1_reg = Theta1;
+Theta1_reg(:,1) =  0;
+
+Theta2_reg = Theta2;
+Theta2_reg(:,1) =  0;
 
 
+%評価関数の計算
+%データセットに対するループは、ベクトル化で行う
+%10個あるラベルに対する計算は、for loopで行う。
 
+for ii = 1:num_labels
 
+%出力関数を再ラベリングする
+yy = (y == ii);
 
+%各々に対して、目標関数を追加する
+J = J + (1/m)*sum(-yy.*log(hx(:,ii))-(1-yy).*log(1-hx(:,ii))); 
 
+end
 
-
-
-
-
-
-
-
-
-
-
+%正則化の項を追加する
+J = J + lambda/(2*m)*(sum(sum(Theta1_reg.^2)) + sum(sum(Theta2_reg.^2)));
 
 % -------------------------------------------------------------
 
