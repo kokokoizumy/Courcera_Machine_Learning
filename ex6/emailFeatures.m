@@ -48,6 +48,26 @@ x = zeros(n, 1);
 %
 %
 
+num_wi = length(word_indices);
+word_check = 0;
+
+for ii = 1:n
+
+    for iii = 1:num_wi
+        if (ii == word_indices(iii))
+            word_check = word_check+1;
+        end
+    end
+
+    if(word_check>=1)
+        x(ii) = 1;
+    else
+        x(ii) = 0;
+    end
+
+    word_check = 0;
+
+end
 
 
 
