@@ -159,8 +159,8 @@ DELTA2 = DELTA2 + delta3 * a2';
 DELTA1 = DELTA1 + delta2(2:end) * a1';
 
 %⑤Thetaの微分値を計算する
-Theta2_grad = (1/m)*DELTA2;
-Theta1_grad = (1/m)*DELTA1;
+Theta2_grad = (1/m)*(DELTA2 + lambda*Theta2_reg);
+Theta1_grad = (1/m)*(DELTA1 + lambda*Theta1_reg);
 
 end
 % =========================================================================
