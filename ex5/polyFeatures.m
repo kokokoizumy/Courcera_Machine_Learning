@@ -15,9 +15,13 @@ X_poly = zeros(numel(X), p);
 %
 % 
 
-
-
-
+for ii = 1:p
+if ii == 1
+X_poly = X;
+else
+X_poly = [X_poly power(X,ii)];
+end
+end
 
 
 % =========================================================================

@@ -52,13 +52,28 @@ error_val   = zeros(m, 1);
 %
 
 % ---------------------- Sample Solution ----------------------
+%各種値の定義
+mval = size(Xval,1)
 
+for ii = 1:m
 
+%訓練データを分割していく
+%これで訓練データのii番目までの行を取り出すことができる。
+X_train = X((1:ii),:);
+y_train = y(1:ii);
 
+%このデータに対して学習をしてもらって、Thetaを受け取るので
+Theta_ii = trainLinearReg(X_train,y_train,lambda);
 
+%この値に対して各々学習をしてもらう
+%訓練データセットに対する評価関数は
+hx_train    = X_train*Theta_ii;
+error_train(ii,1) = (1/(2*ii))*sum((hx_train-y_train).^2);
 
-
-
+%評価データセットに対する評価関数は
+hx_val    = Xval*Theta_ii;  
+error_val(ii,1) = (1/(2*mval))*sum((hx_val-yval).^2);
+end
 % -------------------------------------------------------------
 
 % =========================================================================

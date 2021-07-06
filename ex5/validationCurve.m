@@ -39,9 +39,32 @@ error_val = zeros(length(lambda_vec), 1);
 %
 %
 
+m = size(X,1);
+mval = size(Xval,1);
 
+for ii = 1:length(lambda_vec)
 
+%for文で順にlammbdaの値を変更していく
+lambda = lambda_vec(ii);
 
+%訓練データを分割していく
+%これで訓練データのii番目までの行を取り出すことができる。
+X_train = X;
+y_train = y;
+
+%このデータに対して学習をしてもらって、Thetaを受け取るので
+Theta_train = trainLinearReg(X_train,y_train,lambda);
+
+%この値に対して各々学習をしてもらう
+%訓練データセットに対する評価関数は
+hx_train    = X_train*Theta_train;
+error_train(ii,1) = (1/(2*m))*sum((hx_train-y_train).^2);
+
+%評価データセットに対する評価関数は
+hx_val    = Xval*Theta_train;  
+error_val(ii,1) = (1/(2*mval))*sum((hx_val-yval).^2);
+
+end
 
 
 
