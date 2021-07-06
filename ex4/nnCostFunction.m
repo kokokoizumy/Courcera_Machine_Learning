@@ -62,15 +62,19 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+%①まずはForwardPropagationで、各層のアクティベーションを計算する
 %一層目
 X = [ones(m,1) X];
-temp = X*Theta1';
-temp = sigmoid(temp);
+z_1 = X*Theta1';
+a_2 = sigmoid(z_1);
 
-%二層目：出力層（＝仮設関数の結果になる）
-temp = [ones(m,1) temp];
-hx =  temp*Theta2';
-hx = sigmoid(hx);
+%二層目：出力層
+a_2 = [ones(m,1) a_2];
+z_2 =  a_2*Theta2';
+a_3 = sigmoid(z_2);
+
+%目標関数用に設定しておく。
+hx  = a_3;
 
 %正則化用に、Theta1,Theta2の先頭をゼロにする
 %バイアス項を変更するように、
@@ -90,8 +94,15 @@ for ii = 1:num_labels
 %出力関数を再ラベリングする
 yy = (y == ii);
 
-%各々に対して、目標関数を追加する
+%出力層の各々に対して目標関数を追加する
 J = J + (1/m)*sum(-yy.*log(hx(:,ii))-(1-yy).*log(1-hx(:,ii))); 
+
+%誤差逆伝播法用に出力層の値を用意する
+if ii ==1
+    y_k = yy;
+else
+    y_k = [y_k yy];
+end
 
 end
 
@@ -100,9 +111,62 @@ J = J + lambda/(2*m)*(sum(sum(Theta1_reg.^2)) + sum(sum(Theta2_reg.^2)));
 
 % -------------------------------------------------------------
 
+%誤差逆伝播法を実装する
+%初めてなので、ちょっと泥臭くやるか。
+
+%⓪誤差項DELTAの初期化
+DELTA2 = zeros(size(Theta2));
+DELTA1 = zeros(size(Theta1));
+delta3 = zeros(num_labels,1);
+%delta2 = zeros(26,1);
+
+for ii = 1:m
+%①出力層の計算はしているので注目する値を取り出すのみ
+%行のベクトルなので、列ベクトルに修正す
+
+%入力層
+a1 = X(ii,:)';
+
+%第二層への入力
+z1 = z_1(ii,:)';
+
+%第二層のアクティベーション関数
+a2 = a_2(ii,:)';
+
+%出力層
+a3 = a_3(ii,:)';
+
+    for iii = 1:num_labels
+        %誤差を計算する
+        delta3(iii,1) = a3(iii) - (y(ii,1)==iii);
+    end
+
+%③隠れ層２層目を計算する
+%delta3は10*1の列ベクトル
+%Theta2は10*26の行列
+%sigmoidGradient(a_2)は10*1の行列
+%size(Theta2)
+%size(delta3)
+delta2 = (Theta2'*delta3).* (a2.*(1-a2));
+
+%④隠れ層1層目はないので、次は普通にdeltaの計算をしていく。
+%DELTA2は10*26の行列
+%delta3は10*1の列ベクトル、a2は26*1の列ベクトル
+%DELTA1は25*401の行列
+%delta2(2:end)は25*1の列ベクトル
+%a1は401*1の列ベクトル
+DELTA2 = DELTA2 + delta3 * a2';
+DELTA1 = DELTA1 + delta2(2:end) * a1';
+
+%⑤Thetaの微分値を計算する
+Theta2_grad = (1/m)*DELTA2;
+Theta1_grad = (1/m)*DELTA1;
+
+end
 % =========================================================================
 
 % Unroll gradients
+
 grad = [Theta1_grad(:) ; Theta2_grad(:)];
 
 
