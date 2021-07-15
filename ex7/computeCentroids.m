@@ -28,10 +28,18 @@ centroids = zeros(K, n);
 
 
 
-
-
-
-
+%まず何かしらのcentroidのidxに注目する
+for ii = 1:K
+    count_up = 0;
+    sum = 0;
+    for jj = 1:m
+        if idx(jj,1) == ii
+        count_up++;
+        sum = sum + X(jj,:);
+        end
+    end
+    centroids(ii,:) = 1/count_up*sum;
+end
 
 % =============================================================
 

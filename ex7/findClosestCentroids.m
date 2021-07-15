@@ -21,6 +21,25 @@ idx = zeros(size(X,1), 1);
 % Note: You can use a for-loop over the examples to compute this.
 %
 
+for ii = 1:size(X,1)
+    %比較用の暫定定数を用意する
+    %too big numberで初期化する
+    temp_length = 10000000000000000;
+    temp_idx = 1;
+    for jj = 1:K
+    %今と暫定のcentroidを比較する
+    if temp_length > sum((X(ii,:) - centroids(jj,:)).^2)
+    %成立した時は更新する
+    temp_idx = jj;
+    temp_length = sum((X(ii,:) - centroids(jj,:)).^2);
+    end
+    end
+    idx(ii,1) = temp_idx;
+end
+
+
+
+
 
 
 
