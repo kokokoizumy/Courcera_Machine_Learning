@@ -10,6 +10,11 @@ bestEpsilon = 0;
 bestF1 = 0;
 F1 = 0;
 
+vec_fp = zeros(size(yval));
+vec_fp = zeros(size(yval));
+vec_fn = zeros(size(yval));
+
+
 stepsize = (max(pval) - min(pval)) / 1000;
 for epsilon = min(pval):stepsize:max(pval)
     
@@ -23,16 +28,23 @@ for epsilon = min(pval):stepsize:max(pval)
     % Note: You can use predictions = (pval < epsilon) to get a binary vector
     %       of 0's and 1's of the outlier predictions
 
+%正誤判定を行う、小さいのであれば誤(=1)大きいのであれば正(=0)
+prediction  = (pval<epsilon);
 
+for ii = 1:size(pval,1)
+    vec_tp(ii) = (prediction(ii) == 1)&&(yval(ii) == 1);
+    vec_fp(ii) = (prediction(ii) == 0)&&(yval(ii) == 1);
+    vec_fn(ii) = (prediction(ii) == 1)&&(yval(ii) == 0);
+end
 
+tp = nnz(vec_tp);
+fp = nnz(vec_fp);
+fn = nnz(vec_fn);
 
+prec = tp/(tp+fp);
+rec  = tp/(tp+fn);
 
-
-
-
-
-
-
+F1 = 2*(prec*rec)/(prec+rec);
 
 
     % =============================================================

@@ -21,14 +21,24 @@ sigma2 = zeros(n, 1);
 %               should contain variance of the i-th feature.
 %
 
+%各々の特徴量の平均を計算する
+%size(mu)
+temp_mu = 1/m*sum(X);
+mu = temp_mu' 
+%size(mu)
 
+%分散の計算、for-loopで実装したけどもう少しいい方法はあるかもな。
+for ii = 1:n
+    temp = 0;
+    
+    for jj = 1:m
+        temp = temp + (X(jj,ii) - mu(ii,1))^2;
+    end
 
+    temp2 = 1/m*temp;
+    sigma2(ii,1) = temp2;
 
-
-
-
-
-
+end
 
 % =============================================================
 

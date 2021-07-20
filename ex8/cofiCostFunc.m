@@ -40,21 +40,41 @@ Theta_grad = zeros(size(Theta));
 %                     partial derivatives w.r.t. to each element of Theta
 %
 
+%目的関数の計算
+temp_J = ((X*Theta' - Y).^2).*R;
+J = 1/2*sum(sum(temp_J));
 
+%勾配の計算をやりたい
+%xは映画のジャンルのようなイメージの特徴量
+%Thetaはユーザが与えた映画の評価
+size_x = size(X)
+size_y = size(Y)
+size_theta = size(Theta)
+size_R = size(R)
 
+%Xの勾配の計算
+for ii = 1:size(X,1)
+    %R()=1周りの処理
+    idx_theta = find(R(ii,:)==1);
+    Theta_temp = Theta(idx_theta,:);
+    Y_temp = Y(ii,idx_theta);
+    
+    %勾配の計算
+    X_grad(ii,:) = (X(ii,:)*Theta_temp' - Y_temp)*Theta_temp;
+end
 
+%Tehtaの勾配の計算
+for jj = 1:size(Theta,1)
+    %R()=1周りの処理
+    idx_x = find(R(:,jj)==1);
+    X_temp = X(idx_x,:);
+    Y_temp = Y(idx_x,jj);
 
+    size(X_temp*Theta_grad(jj,:)')
 
-
-
-
-
-
-
-
-
-
-
+    %勾配の計算  1x3
+    Theta_grad(jj,:) = (X_temp*Theta(jj,:)' - Y_temp)'*X_temp;
+end
 % =============================================================
 
 grad = [X_grad(:); Theta_grad(:)];
